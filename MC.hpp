@@ -1,22 +1,36 @@
-MC::MC(int m_){
+template<typename Number>
+MC<Number>::MC(int m_){
     m=m_;
 }
-auto MC::getEstimate(){
+template<typename Number>
+MC<Number>::MC(){
+    
+}
+template<typename Number>
+void MC<Number>::setM(int m_){
+    m=m_;
+}
+template<typename Number>
+Number MC<Number>::getEstimate(){
     return estimate;
 }
-auto MC::getError(){
+template<typename Number>
+Number MC<Number>::getError(){
     return error;
 }
-std::vector<auto> MC::getDistribution(){
-	auto distribution;
+template<typename Number>
+std::vector<Number> MC<Number>::getDistribution(){
+	return distribution;
 }
-double MC::auto(double q){ //eg, .99
+template<typename Number>
+Number MC<Number>::getVaR(double q){ //eg, .99
   std::sort(distribution.begin(), distribution.end());
-  auto distribution[(int)((1.0-q)*m)];
+  return distribution[(int)((1.0-q)*m)];
   //return distribution[(int)((1.0-q)*m)];
 }
+template<typename Number>
 template<typename FN>
-void MC::simulate(FN&& fn) {
+void MC<Number>::simulate(FN&& fn) {
     estimate=fn();
     error=estimate*estimate;
     #pragma omp parallel//multithread using openmp
@@ -31,24 +45,25 @@ void MC::simulate(FN&& fn) {
     error=(error/(double)m-estimate*estimate)/(double)m;
     error=sqrt(error);
 }
+template<typename Number>
 template<typename FN>
-void MC::simulateDistribution(FN&& fn) {
-    estimate=0;
-    error=0;
+void MC<Number>::simulateDistribution(FN&& fn) {
+    estimate=fn();
+    error=estimate*estimate;
     int percComplete=0;
     int modulo=(int)m*.05;
-    distribution=std::vector<double>(m);
+    distribution=std::vector<Number>(m);
     #pragma omp parallel//multithread using openmp
         {
         #pragma omp for //multithread using openmp
-            for(int j=0; j<m; j++){
+            for(int j=1; j<m; j++){
                 distribution[j]=fn();
                 estimate+=distribution[j];
                 error+=distribution[j]*distribution[j];
                 percComplete++;
-                if(percComplete % modulo==0){
-                    std::cout<<"{\"percent\": "<<((double)percComplete)/m<<"}"<<std::endl;
-                }
+                //if(percComplete % modulo==0){
+                std::cout<<"{\"percent\": "<<((double)percComplete)/m<<", \"data\":"<<distribution[j]<<"}"<<std::endl;
+                //}
             }
         }
     estimate=estimate/(double)m;

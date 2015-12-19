@@ -4,22 +4,26 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+template<typename Number>
 class MC {
 	private:
         int m;
-		auto estimate;
-		auto error;
-        std::vector<double> distribution;
+		Number estimate;
+		Number error;
+        std::vector<Number> distribution;
 	public:
 		MC(int);
-		auto getEstimate();
-		auto getError();
-		auto getVaR(double);
-        std::vector<double> getDistribution();
+		MC();
+        void setM(int);
+		Number getEstimate();
+		Number getError();
+		Number getVaR(double);
+        std::vector<Number> getDistribution();
 		template<typename FN>
 		void simulate(FN&& fn);
         template<typename FN>
 		void simulateDistribution(FN&& fn);
+        
 };
 #include "MC.hpp"
 #endif
