@@ -8,6 +8,7 @@ template<typename Number>
 class MC {
 	private:
         int m;
+        int bin=0;
 		Number estimate;
 		Number error;
         std::vector<Number> distribution;

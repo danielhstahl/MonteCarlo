@@ -54,7 +54,18 @@ void MC<Number>::simulateDistribution(FN&& fn) {
     int modulo=(int)m*.05;
     distribution=std::vector<Number>(m);
     distribution[0]=estimate;
-    std::cout<<"{\"percent\": "<<((double)percComplete)/m<<", \"data\":"<<estimate<<"}"<<std::endl;
+    //std::stringstream msg;
+    /*std::mutex m_screen;
+    auto msg=[&](const auto& perc, const auto& dist){
+        //m_screen.lock();
+        std::lock_guard<std::mutex> lock(m_screen);
+        std::cout<<"{\"percent\": "<<perc<<", \"data\":"<<dist<<"}"<<std::endl;
+        //m_screen.unlock();
+    };*/
+    //char buffer[50]; //should be enough...
+    //msg<<"{\"percent\": "<<((double)percComplete)/m<<", \"data\":"<<estimate<<"}"<<"\n";
+    //sprintf(buffer, "{\"percent\": %d, \"data\": %d}\n", ((double)percComplete)/m, estimate);
+    //msg(((double)percComplete)/m, estimate);
     #pragma omp parallel//multithread using openmp
         {
         #pragma omp for //multithread using openmp
@@ -64,8 +75,8 @@ void MC<Number>::simulateDistribution(FN&& fn) {
                 error+=distribution[j]*distribution[j];
                 percComplete++;
                 //if(percComplete % modulo==0){
-                std::cout<<"{\"percent\": "<<((double)percComplete)/m<<", \"data\":"<<distribution[j]<<"}"<<std::endl;
-                //}
+                //    std::cout<<"{\"percent\": "<<((double)percComplete)/m<<"}"<<std::endl;
+               // }
             }
         }
     estimate=estimate/(double)m;
