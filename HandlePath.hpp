@@ -34,7 +34,7 @@ auto executePortfolio( std::vector<AssetFeatures>& portfolio, Date& asOfDate, co
         dt=portfolio[0].Maturity;
     }
     auto val=riskPath.find(dt.getPrimitive())->second;
-    auto portVal=pricingEngine(portfolio[0], val, portfolio[0].Maturity, asOfDate);
+    auto portVal=pricingEngine(portfolio[0], val, dt, asOfDate);
     for(int i=1; i<n;++i){
         
         if(riskPath.find(portfolio[i].Maturity.getPrimitive())!=riskPath.end()){ //if maturity is less than portfolio maturity
@@ -47,6 +47,5 @@ auto executePortfolio( std::vector<AssetFeatures>& portfolio, Date& asOfDate, co
             portVal+=pricingEngine(portfolio[i], val, dt, asOfDate);
         }
     }
-    std::cout<<portVal<<std::endl;
     return portVal;
 }

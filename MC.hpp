@@ -50,9 +50,11 @@ template<typename FN>
 void MC<Number>::simulateDistribution(FN&& fn) {
     estimate=fn();
     error=estimate*estimate;
-    int percComplete=0;
+    int percComplete=1;
     int modulo=(int)m*.05;
     distribution=std::vector<Number>(m);
+    distribution[0]=estimate;
+    std::cout<<"{\"percent\": "<<((double)percComplete)/m<<", \"data\":"<<estimate<<"}"<<std::endl;
     #pragma omp parallel//multithread using openmp
         {
         #pragma omp for //multithread using openmp
