@@ -19,13 +19,14 @@ class MC {
 		Number getEstimate();
 		Number getError();
 		Number getVaR(double);
-        std::vector<Number> getDistribution();
+    std::vector<Number> getDistribution();
 		template<typename FN>
 		void simulate(FN&& fn);
-        template<typename FN>
+  	template<typename FN>
 		void simulateDistribution(FN&& fn);
-        
+		template<typename FN>
+		void simulateDistribution(FN&& fn, auto&);
+
 };
 #include "MC.hpp"
 #endif
- 
