@@ -15,7 +15,7 @@ void binAndSend(auto& ws, int numBins, const Number& min, const Number& max,  co
     std::vector<int> bins(numBins, 0);
     double binWidth=(max-min)/numBins;
     double orderMagnitude=max-min;
-    
+
     orderMagnitude=pow(10.0, 2-(int)log10(orderMagnitude));
     for(int i=0; i<n; ++i){
         bins[(int)((data[i]-min)/binWidth)]++;
@@ -33,21 +33,7 @@ void binAndSend(auto& ws, int numBins, const Number& min, const Number& max,  co
     wsMessage<<bins[numBins-1]<<"]}";
     ws(wsMessage.str());
 }
-/*template<typename Number>
-std::vector<int> bin(int numBins, const std::vector<Number>& data){
-    int n=data.size();
-    //Number min=DBL_MAX;
-    //Number max=DBL_MIN;
-    for(int i=0; i<n; ++i){
-        if(data[i]<min){
-            min=data[i];
-        }
-        else if(data[i]>max){
-            max=data[i];
-        }
-    }
-    return bin(numBins, min, max, data);
-}*/
+
 template<typename Number>
 void binAndSend(auto& ws, Number& min, Number& max, const std::vector<Number>& data){
     int n=data.size();
