@@ -33,17 +33,27 @@ auto executePortfolio( std::vector<AssetFeatures>& portfolio, Date& asOfDate, co
         dt=portfolio[0].Maturity;
     }
     auto val=riskPath.find(dt.getPrimitive())->second;
-    auto portVal=pricingEngine(portfolio[0], val, dt, asOfDate);
+    std::vector<double> holdValues(n);//this stores this round's values for each asset
+    holdValues[0]=pricingEngine(portfolio[0], val, dt, asOfDate);
+    auto portVal=holdValues[0];//finds portfolio value for this round
+    portfolio[0].expectedReturn+=holdValues[0]; //appends current round to asset's values
     for(int i=1; i<n;++i){
         if(riskPath.find(portfolio[i].Maturity.getPrimitive())!=riskPath.end()){ //if maturity is less than portfolio maturity
             val=riskPath.find(portfolio[i].Maturity.getPrimitive())->second;
-            portVal+=pricingEngine(portfolio[i], val, portfolio[i].Maturity, asOfDate);
+            holdValues[i]=pricingEngine(portfolio[i], val, portfolio[i].Maturity, asOfDate);
+            portVal+=holdValues[i];
+            portfolio[i].expectedReturn+=holdValues[i];
         }
         else{
             dt=datePaths.back();
             val=riskPath.find(dt.getPrimitive())->second;
-            portVal+=pricingEngine(portfolio[i], val, dt, asOfDate);
+            holdValues[i]=pricingEngine(portfolio[i], val, portfolio[i].Maturity, asOfDate);
+            portVal+=holdValues[i];
+            portfolio[i].expectedReturn+=holdValues[i];
         }
+    }
+    for(int i=0; i<n; ++i){
+      portfolio[i].covariance+=holdValues[i]*portVal;
     }
     return portVal;
 }
