@@ -41,7 +41,7 @@ void MC<Number>::simulate(FN&& fn) {
             }
         }
     estimate=estimate/(double)m;
-    error=(error/(double)m-estimate*estimate)/(double)m;
+    error=(error/(double)m-estimate*estimate)/(double)(m-1);
     error=sqrt(error);
 }
 template<typename Number>
@@ -61,7 +61,7 @@ void MC<Number>::simulateDistribution(FN&& fn) {
             }
         }
     estimate=estimate/(double)m;
-    error=(error/(double)m-estimate*estimate)/(double)m;
+    error=(error/(double)m-estimate*estimate)/(double)(m-1);
     error=sqrt(error);
 }
 template<typename Number>
@@ -93,6 +93,6 @@ void MC<Number>::simulateDistribution(FN&& fn, auto& ws) {
             }
         }
     estimate=estimate/(double)m;
-    error=(error/(double)m-estimate*estimate)/(double)m;
+    error=(error/(double)m-estimate*estimate)/(double)(m-1);
     error=sqrt(error);
 }
