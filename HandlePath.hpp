@@ -47,7 +47,7 @@ auto executePortfolio( std::vector<AssetFeatures>& portfolio, Date& asOfDate, co
         else{
             dt=datePaths.back();
             val=riskPath.find(dt.getPrimitive())->second;
-            holdValues[i]=pricingEngine(portfolio[i], val, portfolio[i].Maturity, asOfDate);
+            holdValues[i]=pricingEngine(portfolio[i], val, dt, asOfDate);
             portVal+=holdValues[i];
             portfolio[i].expectedReturn+=holdValues[i];
         }
