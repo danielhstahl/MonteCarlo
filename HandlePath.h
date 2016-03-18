@@ -19,12 +19,13 @@ template<typename riskFactor>
 std::unordered_map<Date, riskFactor> getPath(
     std::vector<Date>&, //date paths
     Date&, //as of date
-    const auto&, //factor generator (function) 
+    const auto&, //factor generator (function)
     const riskFactor& //initial value of risk factor
+
 );
 //template<typename maturity>
 std::vector<Date> getUniquePath(
-    std::vector<AssetFeatures>&, //portfolio 
+    std::vector<AssetFeatures>&, //portfolio
     Date& //maturity of the portfolio
 );
 #include "HandlePath.hpp"

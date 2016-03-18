@@ -53,6 +53,7 @@ auto executePortfolio( std::vector<AssetFeatures>& portfolio, Date& asOfDate, co
         }
     }
     for(int i=0; i<n; ++i){
+      //portfolio[i].covariance+=(holdValues[i]-portfolio[i].currValue)*(portVal-currentValue);
       portfolio[i].covariance+=holdValues[i]*portVal;
     }
     return portVal;
