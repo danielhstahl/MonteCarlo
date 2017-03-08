@@ -9,8 +9,8 @@ std::vector<int> bin(int numBins, const Number& min, const Number& max, const st
     }
     return bins;
 }
-template<typename Number>
-void binAndSend(auto& ws, int numBins, const Number& min, const Number& max,  const std::vector<Number>& data){
+template<typename Number, typename WS>
+void binAndSend(WS& ws, int numBins, const Number& min, const Number& max,  const std::vector<Number>& data){
     int n=data.size();
     std::vector<int> bins(numBins, 0);
     double binWidth=(max-min)/numBins;
@@ -34,8 +34,8 @@ void binAndSend(auto& ws, int numBins, const Number& min, const Number& max,  co
     ws(wsMessage.str());
 }
 
-template<typename Number>
-void binAndSend(auto& ws, Number& min, Number& max, const std::vector<Number>& data){
+template<typename Number, typename WS>
+void binAndSend(WS& ws, Number& min, Number& max, const std::vector<Number>& data){
     int n=data.size();
     for(int i=0; i<n; ++i){
         if(data[i]<min){

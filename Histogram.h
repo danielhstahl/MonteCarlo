@@ -11,17 +11,17 @@ std::vector<int> bin(
     const Number&, //max
     const std::vector<Number>& //data
 );
-template<typename Number>
+template<typename Number, typename WS>
 void binAndSend(
-    auto&, 
+    WS&, 
     int, //numbins
     const Number&, //min
     const Number&,  //max
     const std::vector<Number>& //data
 );
-template<typename Number>
+template<typename Number, typename WS>
 void binAndSend(
-    auto&, 
+    WS&, 
     Number&, //min
     Number&, //max
     const std::vector<Number>& //data
